@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discovery — Personal Brand Intake</title>
+<meta name="description" content="A short intake form so we can build your content engine around who you actually are.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1c1a17;
+  --muted:#78716a;
+  --line:#e6e1d7;
+  --paper:#fbf9f4;
+  --card:#fff;
+  --accent:#a8503a;
+  --accent-soft:#f6e8e2;
+  --err:#b4392c;
+  --ok:#4d7c5f;
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px;}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  background:rgba(251,249,244,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:680px;margin:0 auto;padding:12px 20px 10px;
+}
+.topbar-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
+.brandmark{font-family:'Fraunces',Georgia,serif;font-size:15px;font-weight:600;letter-spacing:-.01em;}
+.stepcount{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
+.track{height:5px;background:var(--line);border-radius:99px;margin-top:9px;overflow:hidden;}
+.track-fill{height:100%;width:0%;background:var(--accent);border-radius:99px;transition:width .35s cubic-bezier(.4,0,.2,1);}
+
+/* ---------- Intro ---------- */
+.intro{padding:52px 0 8px;}
+.eyebrow{
+  display:inline-block;font-size:11px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
+  padding:5px 11px;border-radius:99px;margin-bottom:16px;
+}
+h1{font-family:'Fraunces',Georgia,serif;font-size:34px;line-height:1.15;margin:0 0 14px;letter-spacing:-.02em;font-weight:600;}
+.intro p{color:var(--muted);font-size:15.5px;margin:0 0 14px;}
+.meta-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:22px;font-size:13px;color:var(--muted);}
+.meta-row span{display:flex;align-items:center;gap:6px;}
+.dot{width:5px;height:5px;border-radius:99px;background:var(--accent);flex:none;}
+
+/* ---------- Steps ---------- */
+main{padding-bottom:90px;}
+.step{display:none;animation:rise .35s cubic-bezier(.2,.7,.3,1);}
+.step.active{display:block;}
+@keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+.step-head{padding:38px 0 6px;}
+.step-num{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);}
+.step-head h2{font-family:'Fraunces',Georgia,serif;font-size:25px;margin:6px 0 8px;letter-spacing:-.015em;font-weight:600;}
+.step-head p{color:var(--muted);font-size:14.5px;margin:0;}
+
+/* ---------- Fields ---------- */
+.field{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 20px 18px;margin-top:14px;
+}
+.field.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(180,57,44,.07);}
+.q{font-size:15px;font-weight:600;margin:0 0 3px;letter-spacing:-.005em;}
+.req{color:var(--accent);font-weight:600;}
+.hint{font-size:13px;color:var(--muted);margin:0 0 12px;}
+input[type=text],input[type=email],input[type=tel],textarea,select{
+  width:100%;font-family:inherit;font-size:15px;color:var(--ink);
+  background:#fdfcfa;border:1px solid var(--line);border-radius:9px;
+  padding:11px 13px;outline:none;transition:border-color .15s,box-shadow .15s;
+  resize:vertical;
+}
+textarea{min-height:96px;line-height:1.5;}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(168,80,58,.09);background:#fff;}
+::placeholder{color:#b5aea3;}
+
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:flex-start;gap:11px;
+  border:1px solid var(--line);border-radius:9px;padding:11px 13px;
+  cursor:pointer;background:#fdfcfa;transition:border-color .15s,background .15s;
+  font-size:14.5px;
+}
+.opt:hover{border-color:#cfc7b8;}
+.opt input{accent-color:var(--accent);width:16px;height:16px;margin:2px 0 0;flex:none;cursor:pointer;}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft);}
+.opt span{flex:1;}
+.opt small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px;}
+
+.err-msg{display:none;color:var(--err);font-size:13px;margin-top:9px;font-weight:500;}
+.field.invalid .err-msg{display:block;}
+.hp{position:absolute;left:-9999px;opacity:0;height:0;width:0;}
+
+/* ---------- Nav ---------- */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:20;
+  background:rgba(251,249,244,.94);backdrop-filter:blur(8px);
+  border-top:1px solid var(--line);
+}
+.nav-inner{
+  max-width:680px;margin:0 auto;padding:13px 20px;
+  display:flex;gap:10px;align-items:center;
+}
+button{
+  font-family:inherit;font-size:14.5px;font-weight:600;
+  border-radius:9px;padding:12px 22px;cursor:pointer;
+  border:1px solid transparent;transition:opacity .15s,transform .1s,background .15s;
+}
+button:active{transform:translateY(1px);}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:#96462f;}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;}
+.btn-ghost{background:transparent;color:var(--muted);border-color:var(--line);}
+.btn-ghost:hover{color:var(--ink);border-color:#cfc7b8;}
+.spacer{flex:1;}
+.saved{font-size:12px;color:var(--muted);opacity:0;transition:opacity .3s;}
+.saved.show{opacity:1;}
+
+/* ---------- Done ---------- */
+.done{display:none;text-align:center;padding:80px 0 60px;animation:rise .4s;}
+.done.active{display:block;}
+.check{
+  width:58px;height:58px;border-radius:99px;background:var(--accent-soft);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
+  font-size:27px;color:var(--accent);
+}
+.done h2{font-family:'Fraunces',Georgia,serif;font-size:28px;margin:0 0 12px;font-weight:600;}
+.done p{color:var(--muted);font-size:15px;max-width:420px;margin:0 auto 10px;}
+
+.banner{
+  display:none;background:#fdf2f0;border:1px solid #f0cfc8;color:var(--err);
+  border-radius:10px;padding:13px 15px;font-size:14px;margin-top:16px;
+}
+.banner.show{display:block;}
+
+@media(max-width:560px){
+  h1{font-size:28px;}
+  .step-head h2{font-size:22px;}
+  .field{padding:17px 16px 15px;}
+  .intro{padding:38px 0 4px;}
+  button{padding:12px 17px;font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CONFIG — paste your Google Apps Script Web App URL below.
+     Setup instructions are in README.md
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+  const ENDPOINT =  "https://script.google.com/macros/s/AKfycb...ivQ/exec";
+</script>
+
+<div class="topbar" id="topbar" style="display:none;">
+  <div class="topbar-inner">
+    <div class="topbar-row">
+      <div class="brandmark">Discovery</div>
+      <div class="stepcount" id="stepcount">Step 1 of 6</div>
+    </div>
+    <div class="track"><div class="track-fill" id="trackfill"></div></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ═══════════ INTRO ═══════════ -->
+  <section class="intro" id="intro">
+    <span class="eyebrow">Personal brand intake</span>
+    <h1>Let's build this around who you actually are.</h1>
+    <p>Before I write a single caption, I need to understand your goals, your boundaries, and what you'd genuinely be proud to have your name on. This form is how I get there.</p>
+    <p>There are no wrong answers, and short answers are completely fine — I'd rather have your honest one-liner than a polished paragraph. Anything you skip we'll just cover on our kickoff call.</p>
+    <div class="meta-row">
+      <span><i class="dot"></i> 6 short sections</span>
+      <span><i class="dot"></i> ~10–12 minutes</span>
+      <span><i class="dot"></i> Your progress saves automatically</span>
+    </div>
+    <div style="margin-top:30px;">
+      <button class="btn-primary" onclick="start()">Start &nbsp;→</button>
+    </div>
+  </section>
+
+  <main id="main" style="display:none;">
+  <form id="form" autocomplete="on" novalidate>
+
+    <!-- honeypot -->
+    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <!-- ═══════════ STEP 1 ═══════════ -->
+    <section class="step" data-step="1">
+      <div class="step-head">
+        <div class="step-num">Section 1 — The basics</div>
+        <h2>First, the admin bits</h2>
+        <p>So I know where to reach you and what I'm working with.</p>
+      </div>
+
+      <div class="field">
+        <p class="q">Your full name <span class="req">*</span></p>
+        <input type="text" name="Full name" data-required placeholder="Krisha Kapur">
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Email <span class="req">*</span></p>
+        <p class="hint">Where I'll send reports, drafts and invoices.</p>
+        <input type="email" name="Email" data-required data-type="email" placeholder="you@email.com">
+        <div class="err-msg">Please enter a valid email address.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Instagram handle <span class="req">*</span></p>
+        <input type="text" name="Instagram handle" data-required placeholder="@yourhandle">
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">WhatsApp / phone</p>
+        <p class="hint">Optional — only used for quick day-to-day things.</p>
+        <input type="tel" name="Phone" placeholder="+91 ">
+      </div>
+
+      <div class="field">
+        <p class="q">Any other platforms you're active on?</p>
+        <p class="hint">Tick all that apply. Useful to know even if we're only working on Instagram.</p>
+        <div class="opts" data-multi>
+          <label class="opt"><input type="checkbox" name="Other platforms" value="YouTube"><span>YouTube</span></label>
+          <label class="opt"><input type="checkbox" name="Other platforms" value="LinkedIn"><span>LinkedIn</span></label>
+          <label class="opt"><input type="checkbox" name="Other platforms" value="X / Twitter"><span>X / Twitter</span></label>
+          <label class="opt"><input type="checkbox" name="Other platforms" value="Threads"><span>Threads</span></label>
+          <label class="opt"><input type="checkbox" name="Other platforms" value="Snapchat"><span>Snapchat</span></label>
+          <label class="opt"><input type="checkbox" name="Other platforms" value="Just Instagram"><span>Just Instagram for now</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ STEP 2 ═══════════ -->
+    <section class="step" data-step="2">
+      <div class="step-head">
+        <div class="step-num">Section 2 — You &amp; your goals</div>
+        <h2>What are we actually building toward?</h2>
+        <p>This is the most important section. Take your time here.</p>
+      </div>
+
+      <div class="field">
+        <p class="q">Why now? What do you actually want out of growing this? <span class="req">*</span></p>
+        <p class="hint">Be honest — brand deals, credibility in a specific industry, a product you want to launch, a career move, or just "I want it to feel like mine again." All valid.</p>
+        <textarea name="Why now / goal" data-required placeholder="What would make this year feel like a win?"></textarea>
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Twelve months from now, what do you want to be known for? <span class="req">*</span></p>
+        <p class="hint">Finish this sentence: "Oh, she's the one who ______."</p>
+        <textarea name="Known for in 12 months" data-required placeholder="The one who…"></textarea>
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">What's completely off-limits? <span class="req">*</span></p>
+        <p class="hint">Topics, opinions, people, or brand categories you never want attached to your name. I'd rather know the hard lines now than guess. Write "nothing off-limits" if that's genuinely the case.</p>
+        <textarea name="Off-limits" data-required placeholder="e.g. politics, family, anything about my past relationships, alcohol brands…"></textarea>
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Any existing brand deals, exclusivities or commitments I should know about?</p>
+        <p class="hint">Including anything currently in conversation, even if unsigned. This matters for planning and for keeping our commercial terms clean.</p>
+        <textarea name="Existing brand deals" placeholder="Brand, rough timeline, and whether there's any category exclusivity…"></textarea>
+      </div>
+
+      <div class="field">
+        <p class="q">How do you want to sound?</p>
+        <p class="hint">Words or phrases that feel like you — and any that should never show up in your captions.</p>
+        <textarea name="Voice preferences" placeholder="Sounds like me: … / Never say: …"></textarea>
+      </div>
+    </section>
+
+    <!-- ═══════════ STEP 3 ═══════════ -->
+    <section class="step" data-step="3">
+      <div class="step-head">
+        <div class="step-num">Section 3 — Your audience</div>
+        <h2>Who are we talking to?</h2>
+        <p>Your gut read matters more than analytics here.</p>
+      </div>
+
+      <div class="field">
+        <p class="q">Describe your ideal follower <span class="req">*</span></p>
+        <p class="hint">Not just age and city — what are they scrolling for at 11pm, and what would make them stop on your post?</p>
+        <textarea name="Ideal follower" data-required placeholder="Who are they, and what do they want from someone like you?"></textarea>
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Three to five accounts you admire</p>
+        <p class="hint">Doesn't have to be your niche. Just handles is fine — and a word on what you like about each is even better.</p>
+        <textarea name="Accounts admired" placeholder="@handle — what you like about them"></textarea>
+      </div>
+
+      <div class="field">
+        <p class="q">Who feels like your closest "competition"?</p>
+        <p class="hint">People in a similar lane. What do they do well, and what do you think they get wrong?</p>
+        <textarea name="Competitors" placeholder="@handle — does X well, but…"></textarea>
+      </div>
+
+      <div class="field">
+        <p class="q">What's the most common DM or comment you get?</p>
+        <p class="hint">The question people keep asking you is usually your best content pillar. Paste a few real examples if you can.</p>
+        <textarea name="Common DMs" placeholder="People always ask me…"></textarea>
+      </div>
+    </section>
+
+    <!-- ═══════════ STEP 4 ═══════════ -->
+    <section class="step" data-step="4">
+      <div class="step-head">
+        <div class="step-num">Section 4 — Content &amp; production</div>
+        <h2>What we can realistically make</h2>
+        <p>I'd rather build a plan you'll actually sustain than an ambitious one you'll dread.</p>
+      </div>
+
+      <div class="field">
+        <p class="q">What real material can we pull from? <span class="req">*</span></p>
+        <p class="hint">Behind-the-scenes footage, screenshots, voice notes, old photos, past wins, results, messages from people you've helped. The raw stuff is what makes content feel real instead of generic.</p>
+        <textarea name="Available material" data-required placeholder="What already exists on your camera roll or in your drive?"></textarea>
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">How do you feel about being on camera? <span class="req">*</span></p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="On-camera comfort" data-required value="Fully comfortable"><span>Fully comfortable — talking to camera, all of it</span></label>
+          <label class="opt"><input type="radio" name="On-camera comfort" value="On camera, but not talking to it"><span>On camera is fine, but I'd rather not talk directly to it<small>B-roll, voiceovers, text-on-screen</small></span></label>
+          <label class="opt"><input type="radio" name="On-camera comfort" value="Minimal face"><span>Keep my face to a minimum</span></label>
+          <label class="opt"><input type="radio" name="On-camera comfort" value="Depends on the topic"><span>Depends entirely on the topic</span></label>
+        </div>
+        <div class="err-msg">Please pick one.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Realistically, how much time can you give this each week? <span class="req">*</span></p>
+        <p class="hint">Filming, our call, and reviewing drafts — all in. Please answer with your honest worst week, not your best one.</p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="Weekly time budget" data-required value="Under 1 hour"><span>Under an hour</span></label>
+          <label class="opt"><input type="radio" name="Weekly time budget" value="1-2 hours"><span>1–2 hours</span></label>
+          <label class="opt"><input type="radio" name="Weekly time budget" value="2-4 hours"><span>2–4 hours</span></label>
+          <label class="opt"><input type="radio" name="Weekly time budget" value="4+ hours"><span>4+ hours — I want to go all in</span></label>
+        </div>
+        <div class="err-msg">Please pick one.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Anything that's worked well for you before?</p>
+        <p class="hint">A format, a series, a specific post that popped. Links or handles welcome.</p>
+        <textarea name="What has worked before" placeholder="That one post/format that did numbers…"></textarea>
+      </div>
+
+      <div class="field">
+        <p class="q">Anything you'd rather never do?</p>
+        <p class="hint">Tick anything that makes you cringe. No judgement — it just saves us both a wasted draft.</p>
+        <div class="opts" data-multi>
+          <label class="opt"><input type="checkbox" name="Formats to avoid" value="Trending audio / lip-sync"><span>Trending audio &amp; lip-sync</span></label>
+          <label class="opt"><input type="checkbox" name="Formats to avoid" value="Dancing / pointing at text"><span>Dancing or pointing-at-floating-text</span></label>
+          <label class="opt"><input type="checkbox" name="Formats to avoid" value="Storytimes"><span>Storytimes / personal confessionals</span></label>
+          <label class="opt"><input type="checkbox" name="Formats to avoid" value="Talking-head opinion rants"><span>Talking-head opinion takes</span></label>
+          <label class="opt"><input type="checkbox" name="Formats to avoid" value="Day-in-the-life vlogs"><span>Day-in-the-life vlogs</span></label>
+          <label class="opt"><input type="checkbox" name="Formats to avoid" value="Open to everything"><span>Honestly, I'm open to trying anything</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ STEP 5 ═══════════ -->
+    <section class="step" data-step="5">
+      <div class="step-head">
+        <div class="step-num">Section 5 — How we'll work</div>
+        <h2>Approvals &amp; logistics</h2>
+        <p>Getting this clear now is what keeps things from getting stuck later.</p>
+      </div>
+
+      <div class="field">
+        <p class="q">Who has the final yes on a post? <span class="req">*</span></p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="Approver" data-required value="Just me"><span>Just me</span></label>
+          <label class="opt"><input type="radio" name="Approver" value="Me + manager/agency"><span>Me, plus my manager or agency</span></label>
+          <label class="opt"><input type="radio" name="Approver" value="Me + family/partner"><span>Me, plus family or my partner</span></label>
+          <label class="opt"><input type="radio" name="Approver" value="Someone else"><span>Someone else</span></label>
+        </div>
+        <div class="err-msg">Please pick one.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">If someone else signs off, who are they and how do I reach them?</p>
+        <input type="text" name="Approver details" placeholder="Name, role, phone/email">
+      </div>
+
+      <div class="field">
+        <p class="q">How quickly can you realistically approve a draft? <span class="req">*</span></p>
+        <p class="hint">Be honest rather than generous — I'll build the calendar around your real speed.</p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="Approval turnaround" data-required value="Same day"><span>Same day</span></label>
+          <label class="opt"><input type="radio" name="Approval turnaround" value="Within 24 hours"><span>Within 24 hours</span></label>
+          <label class="opt"><input type="radio" name="Approval turnaround" value="Within 48 hours"><span>Within 48 hours</span></label>
+          <label class="opt"><input type="radio" name="Approval turnaround" value="A few days"><span>Give me a few days</span></label>
+        </div>
+        <div class="err-msg">Please pick one.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Can you give me collaborator access to your Instagram? <span class="req">*</span></p>
+        <p class="hint">Via Meta Business Suite — this lets me schedule and pull proper analytics without ever needing your password.</p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="IG access" data-required value="Yes, ready to set up"><span>Yes, happy to set that up</span></label>
+          <label class="opt"><input type="radio" name="IG access" value="Yes, but need help"><span>Yes, but I'll need you to walk me through it</span></label>
+          <label class="opt"><input type="radio" name="IG access" value="Prefer to post myself"><span>I'd rather post everything myself</span></label>
+        </div>
+        <div class="err-msg">Please pick one.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Where should we keep files?</p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="File storage" value="Google Drive"><span>Google Drive</span></label>
+          <label class="opt"><input type="radio" name="File storage" value="Dropbox"><span>Dropbox</span></label>
+          <label class="opt"><input type="radio" name="File storage" value="Notion"><span>Notion</span></label>
+          <label class="opt"><input type="radio" name="File storage" value="No preference"><span>No preference — you pick</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <p class="q">Best way to reach you day to day? <span class="req">*</span></p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="Preferred channel" data-required value="WhatsApp"><span>WhatsApp</span></label>
+          <label class="opt"><input type="radio" name="Preferred channel" value="Email"><span>Email</span></label>
+          <label class="opt"><input type="radio" name="Preferred channel" value="Instagram DM"><span>Instagram DM</span></label>
+          <label class="opt"><input type="radio" name="Preferred channel" value="Phone call"><span>Just call me</span></label>
+        </div>
+        <div class="err-msg">Please pick one.</div>
+      </div>
+    </section>
+
+    <!-- ═══════════ STEP 6 ═══════════ -->
+    <section class="step" data-step="6">
+      <div class="step-head">
+        <div class="step-num">Section 6 — What winning looks like</div>
+        <h2>How we'll both know it's working</h2>
+        <p>Last section. This is what I'll be measured against.</p>
+      </div>
+
+      <div class="field">
+        <p class="q">What does "this is working" look like to you? <span class="req">*</span></p>
+        <p class="hint">In numbers if you can — followers, views, saves, or inbound brand enquiries per month.</p>
+        <textarea name="Definition of success" data-required placeholder="In 90 days, I'd be happy if…"></textarea>
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">Your best-ever numbers so far <span class="req">*</span></p>
+        <p class="hint">Your highest follower count, your best-performing post's reach, and the best engagement rate you've seen. Check your Instagram Insights — a rough number is fine, and screenshots are even better (you can send those separately).</p>
+        <textarea name="Peak metrics" data-required placeholder="Best month: … followers / Best post: … views / Typical engagement: …"></textarea>
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">And where are you right now? <span class="req">*</span></p>
+        <p class="hint">Current follower count and roughly what a normal post does these days. This is our starting line.</p>
+        <textarea name="Current metrics" data-required placeholder="Currently at … followers, a normal post gets around … views"></textarea>
+        <div class="err-msg">Please fill this in.</div>
+      </div>
+
+      <div class="field">
+        <p class="q">How often do you want to hear how things are going?</p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="Reporting preference" value="Monthly written report"><span>Monthly written report</span></label>
+          <label class="opt"><input type="radio" name="Reporting preference" value="Monthly call"><span>Monthly call</span></label>
+          <label class="opt"><input type="radio" name="Reporting preference" value="Both"><span>Both — report then a call to walk through it</span></label>
+          <label class="opt"><input type="radio" name="Reporting preference" value="Weekly light update"><span>A light update every week</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <p class="q">Anything else I should know?</p>
+        <p class="hint">Anything that didn't fit above — worries, past bad experiences with people managing your content, things you're excited about.</p>
+        <textarea name="Anything else" placeholder="Optional, but often the most useful box on this form."></textarea>
+      </div>
+
+      <div class="banner" id="banner"></div>
+    </section>
+
+  </form>
+  </main>
+
+  <!-- ═══════════ DONE ═══════════ -->
+  <section class="done" id="done">
+    <div class="check">✓</div>
+    <h2>That's everything — thank you.</h2>
+    <p>Your answers are in. I'll go through them properly, audit your account, and come back with an initial content plan before our kickoff call.</p>
+    <p style="margin-top:18px;font-size:14px;">You can close this tab now.</p>
+  </section>
+
+</div>
+
+<div class="nav" id="nav" style="display:none;">
+  <div class="nav-inner">
+    <button type="button" class="btn-ghost" id="backBtn" onclick="go(-1)">← Back</button>
+    <div class="spacer"></div>
+    <span class="saved" id="savedFlag">Saved</span>
+    <button type="button" class="btn-primary" id="nextBtn" onclick="go(1)">Continue →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const KEY = 'pb-discovery-draft-v1';
+  const steps = Array.from(document.querySelectorAll('.step'));
+  const TOTAL = steps.length;
+  let cur = 0;
+  let sending = false;
+
+  const el = {
+    topbar: document.getElementById('topbar'),
+    intro: document.getElementById('intro'),
+    main: document.getElementById('main'),
+    nav: document.getElementById('nav'),
+    done: document.getElementById('done'),
+    fill: document.getElementById('trackfill'),
+    count: document.getElementById('stepcount'),
+    back: document.getElementById('backBtn'),
+    next: document.getElementById('nextBtn'),
+    banner: document.getElementById('banner'),
+    saved: document.getElementById('savedFlag'),
+    form: document.getElementById('form')
+  };
+
+  /* ---------- storage (guarded — degrades silently) ---------- */
+  function save(){
+    try{
+      localStorage.setItem(KEY, JSON.stringify({step:cur, data:collect()}));
+      el.saved.classList.add('show');
+      clearTimeout(save._t);
+      save._t = setTimeout(()=>el.saved.classList.remove('show'), 1400);
+    }catch(e){}
+  }
+  function restore(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){ return null; }
+  }
+  function clearSave(){ try{ localStorage.removeItem(KEY); }catch(e){} }
+
+  /* ---------- collect answers ---------- */
+  function collect(){
+    const out = {};
+    const seen = {};
+    el.form.querySelectorAll('input[name], textarea[name], select[name]').forEach(f=>{
+      const n = f.name;
+      if(n === 'website') return;
+      if(f.type === 'checkbox'){
+        if(!seen[n]){ seen[n] = []; }
+        if(f.checked) seen[n].push(f.value);
+      } else if(f.type === 'radio'){
+        if(f.checked) out[n] = f.value;
+        else if(!(n in out)) out[n] = out[n] || '';
+      } else {
+        out[n] = f.value.trim();
+      }
+    });
+    Object.keys(seen).forEach(k => out[k] = seen[k].join(', '));
+    return out;
+  }
+
+  function apply(data){
+    if(!data) return;
+    el.form.querySelectorAll('input[name], textarea[name], select[name]').forEach(f=>{
+      const v = data[f.name];
+      if(v === undefined || v === '') return;
+      if(f.type === 'checkbox'){
+        if(String(v).split(', ').indexOf(f.value) > -1) f.checked = true;
+      } else if(f.type === 'radio'){
+        if(f.value === v) f.checked = true;
+      } else {
+        f.value = v;
+      }
+    });
+    syncPills();
+  }
+
+  /* ---------- selected-state pills ---------- */
+  function syncPills(){
+    document.querySelectorAll('.opt').forEach(o=>{
+      const i = o.querySelector('input');
+      o.classList.toggle('sel', i && i.checked);
+    });
+  }
+
+  /* ---------- validation ---------- */
+  function validate(idx){
+    let ok = true;
+    const step = steps[idx];
+    step.querySelectorAll('.field').forEach(field=>{
+      const reqInput = field.querySelector('[data-required]');
+      if(!reqInput) return;
+      let filled = false;
+      if(reqInput.type === 'radio'){
+        filled = !!field.querySelector('input[type=radio]:checked');
+      } else {
+        filled = reqInput.value.trim().length > 0;
+        if(filled && reqInput.dataset.type === 'email'){
+          filled = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(reqInput.value.trim());
+        }
+      }
+      field.classList.toggle('invalid', !filled);
+      if(!filled && ok){
+        ok = false;
+        setTimeout(()=>{
+          field.scrollIntoView({behavior:'smooth', block:'center'});
+          const focusable = field.querySelector('input,textarea');
+          if(focusable && focusable.type !== 'radio' && focusable.type !== 'checkbox') focusable.focus({preventScroll:true});
+        }, 60);
+      }
+    });
+    return ok;
+  }
+
+  /* ---------- navigation ---------- */
+  function render(){
+    steps.forEach((s,i)=> s.classList.toggle('active', i === cur));
+    el.fill.style.width = ((cur+1)/TOTAL*100) + '%';
+    el.count.textContent = 'Step ' + (cur+1) + ' of ' + TOTAL;
+    el.back.style.visibility = cur === 0 ? 'hidden' : 'visible';
+    el.next.textContent = cur === TOTAL-1 ? 'Submit answers  ✓' : 'Continue →';
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.go = function(dir){
+    if(sending) return;
+    if(dir > 0 && !validate(cur)) return;
+    if(dir > 0 && cur === TOTAL-1){ submit(); return; }
+    cur = Math.max(0, Math.min(TOTAL-1, cur + dir));
+    save();
+    render();
+  };
+
+  window.start = function(){
+    el.intro.style.display = 'none';
+    el.main.style.display = 'block';
+    el.nav.style.display = 'block';
+    el.topbar.style.display = 'block';
+    const prev = restore();
+    if(prev){ apply(prev.data); cur = Math.min(prev.step || 0, TOTAL-1); }
+    render();
+  };
+
+  /* ---------- submit ---------- */
+  async function submit(){
+    if(!ENDPOINT || ENDPOINT.indexOf('PASTE_YOUR') === 0){
+      show('This form isn’t connected to its backend yet. (Developer: set the ENDPOINT value in index.html.)');
+      return;
+    }
+    // honeypot
+    const hp = el.form.querySelector('input[name=website]');
+    if(hp && hp.value){ finish(); return; }
+
+    sending = true;
+    el.next.disabled = true;
+    el.next.textContent = 'Sending…';
+    el.banner.classList.remove('show');
+
+    const payload = collect();
+    payload['User agent'] = navigator.userAgent;
+
+    try{
+      // text/plain avoids a CORS preflight, which Apps Script cannot answer
+      await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      });
+      finish();
+    }catch(err){
+      // opaque fallback — the write still lands, we just can't read the response
+      try{
+        await fetch(ENDPOINT, {
+          method:'POST',
+          mode:'no-cors',
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
+          body: JSON.stringify(payload)
+        });
+        finish();
+      }catch(e2){
+        sending = false;
+        el.next.disabled = false;
+        el.next.textContent = 'Submit answers  ✓';
+        show('Something went wrong sending your answers. Please check your connection and try again — nothing you typed has been lost.');
+      }
+    }
+  }
+
+  function finish(){
+    clearSave();
+    el.main.style.display = 'none';
+    el.nav.style.display = 'none';
+    el.topbar.style.display = 'none';
+    el.done.classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function show(msg){
+    el.banner.textContent = msg;
+    el.banner.classList.add('show');
+    el.banner.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  /* ---------- listeners ---------- */
+  el.form.addEventListener('input', ()=>{ save(); });
+  el.form.addEventListener('change', ()=>{ syncPills(); save(); });
+  el.form.addEventListener('submit', e => e.preventDefault());
+
+  // clear invalid state as soon as they start fixing it
+  el.form.addEventListener('input', e=>{
+    const f = e.target.closest('.field');
+    if(f) f.classList.remove('invalid');
+  });
+  el.form.addEventListener('change', e=>{
+    const f = e.target.closest('.field');
+    if(f) f.classList.remove('invalid');
+  });
+
+  // warn before leaving mid-form
+  window.addEventListener('beforeunload', e=>{
+    if(el.main.style.display === 'block' && !sending){
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
